@@ -54,13 +54,13 @@
 		var ua = navigator.userAgent, // Get user agent string.
 		android = false, // Variable for storing android version.
 		iOS = false; // Variable for storing iOS version.
-		
+
 		if (/Android/.test(ua)) { // Detect Android in user agent string.
 			android = ua.substr(ua.indexOf('Android')+8, 3); // Set version of Android.
 		} else if (/(iPhone|iPod|iPad)/.test(ua)) { // Detect iOS in user agent string.
 			iOS = ua.substr(ua.indexOf('OS ')+3, 3).replace('_', '.'); // Set version of iOS.
 		}
-		
+
 		if (android && android < 3 || iOS && iOS < 5) $('html').addClass('sb-static'); // Add helper class for older versions of Android & iOS.
 
 		// -----------
@@ -69,7 +69,7 @@
 		// Site container
 		var $site = $('#sb-site, .sb-site-container'); // Cache the selector.
 
-		// Left Slidebar	
+		// Left Slidebar
 		if ($('.sb-left').length) { // Check if the left Slidebar exists.
 			var $left = $('.sb-left'), // Cache the selector.
 			leftActive = false; // Used to check whether the left Slidebar is open or closed.
@@ -80,15 +80,15 @@
 			var $right = $('.sb-right'), // Cache the selector.
 			rightActive = false; // Used to check whether the right Slidebar is open or closed.
 		}
-				
+
 		var init = false, // Initialisation variable.
 		windowWidth = $(window).width(), // Get width of window.
 		$controls = $('.sb-toggle-left, .sb-toggle-right, .sb-open-left, .sb-open-right, .sb-close'), // Cache the control classes.
 		$slide = $('.sb-slide'); // Cache users elements to animate.
-		
+
 		// Initailise Slidebars
 		function initialise() {
-			if (!settings.disableOver || (typeof settings.disableOver === 'number' && settings.disableOver >= windowWidth)) { // False or larger than window size. 
+			if (!settings.disableOver || (typeof settings.disableOver === 'number' && settings.disableOver >= windowWidth)) { // False or larger than window size.
 				init = true; // true enabled Slidebars to open.
 				$('html').addClass('sb-init'); // Add helper class.
 				if (settings.hideControlClasses) $controls.removeClass('sb-hide'); // Remove class just incase Slidebars was originally disabled.
@@ -102,25 +102,25 @@
 			}
 		}
 		initialise();
-		
+
 		// Inline CSS
 		function css() {
 			// Set minimum height.
 			$site.css('minHeight', ''); // Reset minimum height.
 			$site.css('minHeight', $('html').height() + 'px'); // Set minimum height of the site to the minimum height of the html.
-			
+
 			// Custom Slidebar widths.
 			if ($left && $left.hasClass('sb-width-custom')) $left.css('width', $left.attr('data-sb-width')); // Set user custom width.
 			if ($right && $right.hasClass('sb-width-custom')) $right.css('width', $right.attr('data-sb-width')); // Set user custom width.
-			
+
 			// Set off-canvas margins for Slidebars with push and overlay animations.
 			if ($left && ($left.hasClass('sb-style-push') || $left.hasClass('sb-style-overlay'))) $left.css('marginLeft', '-' + $left.css('width'));
 			if ($right && ($right.hasClass('sb-style-push') || $right.hasClass('sb-style-overlay'))) $right.css('marginRight', '-' + $right.css('width'));
-			
+
 			// Site scroll locking.
 			if (settings.scrollLock) $('html').addClass('sb-scroll-lock');
 		}
-		
+
 		// Resize Functions
 		$(window).resize(function() {
 			var resizedWindowWidth = $(window).width(); // Get resized window width.
@@ -150,7 +150,7 @@
 		function animate(object, amount, side) {
 			// Choose selectors depending on animation style.
 			var selector;
-			
+
 			if (object.hasClass('sb-style-push')) {
 				selector = $site.add(object).add($slide); // Push - Animate site, Slidebar and user elements.
 			} else if (object.hasClass('sb-style-overlay')) {
@@ -158,12 +158,12 @@
 			} else {
 				selector = $site.add($slide); // Reveal - Animate site and user elements.
 			}
-			
+
 			// Apply animation
 			if (animation === 'translate') {
 				selector.css('transform', 'translate(' + amount + ')'); // Apply the animation.
 
-			} else if (animation === 'side') {		
+			} else if (animation === 'side') {
 				if (amount[0] === '-') amount = amount.substr(1); // Remove the '-' from the passed amount for side animations.
 				if (amount !== '0px') selector.css(side, '0px'); // Add a 0 value so css transition works.
 				setTimeout(function() { // Set a timeout to allow the 0 value to be applied above.
@@ -176,7 +176,7 @@
 				properties[side] = amount;
 				selector.stop().animate(properties, 400); // Stop any current jQuery animation before starting another.
 			}
-			
+
 			// If closed, remove the inline styling on completion of the animation.
 			setTimeout(function() {
 				if (amount === '0px') {
@@ -214,7 +214,7 @@
 				}
 			}
 		}
-			
+
 		// Close either Slidebar
 		function close(link) {
 			if (leftActive || rightActive) { // If a Slidebar is open.
@@ -226,7 +226,7 @@
 					animate($right, '0px', 'right'); // Animation
 					rightActive = false;
 				}
-			
+
 				setTimeout(function() { // Wait for closing animation to finish.
 					$('html').removeClass('sb-active sb-active-left sb-active-right'); // Remove active classes.
 					if ($left) $left.removeClass('sb-active');
@@ -235,7 +235,7 @@
 				}, 400);
 			}
 		}
-		
+
 		// Toggle either Slidebar
 		function toggle(side) {
 			if (side === 'left' && $left) { // If left Slidebar is called and in use.
@@ -254,10 +254,31 @@
 			}
 		}
 
+		function reload (){
+			// Left Slidebar
+			if ($('.sb-left').length) { // Check if the left Slidebar exists.
+				$left = $('.sb-left'), // Cache the selector.
+				leftActive = false; // Used to check whether the left Slidebar is open or closed.
+			}
+
+			// Right Slidebar
+			if ($('.sb-right').length) { // Check if the right Slidebar exists.
+				$right = $('.sb-right'), // Cache the selector.
+				rightActive = false; // Used to check whether the right Slidebar is open or closed.
+			}
+
+			$controls = $('.sb-toggle-left, .sb-toggle-right, .sb-open-left, .sb-open-right, .sb-close'), // Cache the control classes.
+			$slide = $('.sb-slide'); // Cache users elements to animate.
+			initialise();
+			bindElement();
+		}
+
+
 		// ---------
 		// 007 - API
-		
+
 		this.slidebars = {
+			reload : reload,
 			open: open, // Maps user variable name to the open method.
 			close: close, // Maps user variable name to the close method.
 			toggle: toggle, // Maps user variable name to the toggle method.
@@ -288,59 +309,64 @@
 
 		// ----------------
 		// 008 - User Input
-		
+
 		function eventHandler(event, selector) {
 			event.stopPropagation(); // Stop event bubbling.
 			event.preventDefault(); // Prevent default behaviour.
 			if (event.type === 'touchend') selector.off('click'); // If event type was touch, turn off clicks to prevent phantom clicks.
 		}
-		
-		// Toggle left Slidebar
-		$('.sb-toggle-left').on('touchend click', function(event) {
-			eventHandler(event, $(this)); // Handle the event.
-			toggle('left'); // Toggle the left Slidbar.
-		});
-		
-		// Toggle right Slidebar
-		$('.sb-toggle-right').on('touchend click', function(event) {
-			eventHandler(event, $(this)); // Handle the event.
-			toggle('right'); // Toggle the right Slidbar.
-		});
-		
-		// Open left Slidebar
-		$('.sb-open-left').on('touchend click', function(event) {
-			eventHandler(event, $(this)); // Handle the event.
-			open('left'); // Open the left Slidebar.
-		});
-		
-		// Open right Slidebar
-		$('.sb-open-right').on('touchend click', function(event) {
-			eventHandler(event, $(this)); // Handle the event.
-			open('right'); // Open the right Slidebar.
-		});
-		
-		// Close Slidebar
-		$('.sb-close').on('touchend click', function(event) {
-			if ( $(this).is('a') || $(this).children().is('a') ) { // Is a link or contains a link.
-				if ( event.type === 'click' ) { // Make sure the user wanted to follow the link.
-					event.preventDefault(); // Stop default behaviour.
-					var href = ( $(this).is('a') ? $(this).attr('href') : $(this).find('a').attr('href') ); // Get the href.
-					close( href ); // Close Slidebar and pass link.
+
+		function bindElement() {
+
+			// Toggle left Slidebar
+			$('.sb-toggle-left').off().on('touchend click', function(event) {
+				eventHandler(event, $(this)); // Handle the event.
+				toggle('left'); // Toggle the left Slidbar.
+			});
+
+			// Toggle right Slidebar
+			$('.sb-toggle-right').off().on('touchend click', function(event) {
+				eventHandler(event, $(this)); // Handle the event.
+				toggle('right'); // Toggle the right Slidbar.
+			});
+
+			// Open left Slidebar
+			$('.sb-open-left').off().on('touchend click', function(event) {
+				eventHandler(event, $(this)); // Handle the event.
+				open('left'); // Open the left Slidebar.
+			});
+
+			// Open right Slidebar
+			$('.sb-open-right').off().on('touchend click', function(event) {
+				eventHandler(event, $(this)); // Handle the event.
+				open('right'); // Open the right Slidebar.
+			});
+
+			// Close Slidebar
+			$('.sb-close').off().on('touchend click', function(event) {
+				if ( $(this).is('a') || $(this).children().is('a') ) { // Is a link or contains a link.
+					if ( event.type === 'click' ) { // Make sure the user wanted to follow the link.
+						event.preventDefault(); // Stop default behaviour.
+						var href = ( $(this).is('a') ? $(this).attr('href') : $(this).find('a').attr('href') ); // Get the href.
+						close( href ); // Close Slidebar and pass link.
+					}
+				} else { // Just a normal control class.
+					eventHandler(event, $(this)); // Handle the event.
+					close(); // Close Slidebar.
 				}
-			} else { // Just a normal control class.
-				eventHandler(event, $(this)); // Handle the event.
-				close(); // Close Slidebar.
-			}
-		});
-		
-		// Close Slidebar via site
-		$site.on('touchend click', function(event) {
-			if (settings.siteClose && (leftActive || rightActive)) { // If settings permit closing by site and left or right Slidebar is open.
-				eventHandler(event, $(this)); // Handle the event.
-				close(); // Close it.
-			}
-		});
-		
+			});
+
+			// Close Slidebar via site
+			$site.off().on('touchend click', function(event) {
+				if (settings.siteClose && (leftActive || rightActive)) { // If settings permit closing by site and left or right Slidebar is open.
+					eventHandler(event, $(this)); // Handle the event.
+					close(); // Close it.
+				}
+			});
+		}
+
+		bindElement();
+
 	}; // End Slidebars function.
 
 }) (jQuery);
